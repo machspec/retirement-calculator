@@ -1,0 +1,97 @@
+:root {
+    --bd: solid 1px var(--lighter);
+    --bg: #222;
+    --fg: #eee;
+    --lighter: #fff6;
+    --darker: #0008;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    background-color: var(--bg);
+    color: var(--fg);
+    font-family: sans-serif;
+}
+
+header, h3 {
+    grid-column: 1 / -1;
+}
+
+h3 {
+    text-align: center;
+    padding-bottom: .25rem;
+    margin-bottom: .25rem;
+    border-bottom: var(--bd);
+    width: 100%;
+}
+
+main {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-template-rows: auto 1fr;
+    gap: .25rem;
+    padding: .25rem;
+    height: 100vh;
+}
+
+section {
+    display: flex;
+    flex-direction: column;
+    gap: .25rem;
+    position: relative;
+    background-color: var(--lighter);
+}
+
+#left {
+    display: grid;
+    grid-template-rows: auto 1fr;
+}
+
+#right {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+}
+
+section > :is(div, table) {
+    background-color: var(--darker);
+    padding: .5rem;
+}
+
+table {
+    margin: .25rem;
+    border-collapse: collapse;
+    outline: var(--bd);
+}
+
+td {
+    padding: .25rem;
+    border: var(--bd);
+}
+
+#inputs {
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: .5rem;
+}
+
+#table-settings {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0 1rem;
+
+    width: 100%;
+    font-size: .8rem;
+    max-height: 4rem;
+}
+
+#table-settings>input {
+    width: 2.7rem;
+    margin-top: .2rem;
+}

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retirement Calculator</title>
+    <link rel="stylesheet" href="./styles.css">
+</head>
+<body>    
+    <main>
+        <header>
+            <h2>Retirement Calculator</h2>
+        </header>
+        <section id="left">
+            <div id="inputs">
+                <h3>Inputs</h3>
+                <p>Age in 2023</p><input id="age">
+                <p>Current Nest Egg</p><input id="nest-egg">
+                <p>Amt Invested Monthly</p><input id="amt-inv">
+                <p>Exp. Interest Rate</p><input id="exp-int">
+                <p>Retirement Age</p><input id="ret-age">
+            </div>
+            <div id="age-sixty">
+                <p>Startup</p><p id="startup"></p>
+                <p>Age Sixty</p><p id="age-sixty"></p>
+                <p>Total Invested</p><p id="total-inv"></p>
+            </div>
+        </section>
+        <section id="right">
+            <div id="stats">
+                <p>Retirement Age</p><p id="stat-ret-age"></p>
+                <p>Retirement Nest Egg Start</p><p id="state-nest-egg"></p>
+                <p>Annual Draw Down</p><p id="stat-draw-down"></p>
+                <p>Exp. Interest Rate in Retirement</p><p id="stat-exp-int"></p>
+            </div>
+            <table id="age-results">
+                <thead>
+                    <tr>
+                        <td>Age</td>
+                        <td>Nest Egg &dollar;</td>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <div id="table-settings">
+                <h3>Table Settings</h3>
+                <p>Start</p><input id="starting-age" type="number" value="65" min="1">
+                <p>Increment</p><input id="age-increment" type="number" value="5" min="1">
+                <p>Rows</p><input id="row-count" type="number" value="8" min="1">
+            </div>
+        </section>
+    </main>
+
+    <script src="./main.js"></script>
+</body>
+</html>
