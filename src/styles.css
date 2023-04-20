@@ -4,6 +4,7 @@
     --fg: #eee;
     --lighter: #fff6;
     --darker: #0008;
+    --muted: #fff2;
 }
 
 * {
@@ -18,7 +19,8 @@ html {
     font-family: sans-serif;
 }
 
-header, h3 {
+header,
+h3 {
     grid-column: 1 / -1;
 }
 
@@ -33,7 +35,7 @@ h3 {
 main {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    grid-template-rows: auto 1fr;
+    grid-template-rows: 28px 1fr;
     gap: .25rem;
     padding: .25rem;
     height: 100vh;
@@ -55,22 +57,52 @@ section {
 #right {
     display: grid;
     grid-template-rows: auto 1fr auto;
+    max-height: calc(100vh - 28px - .75rem);
 }
 
-section > :is(div, table) {
+#age-results-container {
+    overflow-y: scroll;
+    padding: 0;
+}
+
+section>div {
     background-color: var(--darker);
     padding: .5rem;
 }
 
 table {
-    margin: .25rem;
     border-collapse: collapse;
     outline: var(--bd);
+    width: 100%;
 }
 
 td {
     padding: .25rem;
-    border: var(--bd);
+    padding-left: 1rem;
+    border-top: var(--bd);
+    border-bottom: var(--bd);
+}
+
+tr {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    width: 100%;
+}
+
+tr:nth-child(odd) {
+    background-color: var(--muted);
+}
+
+thead {
+    position: sticky;
+    top: 0;
+    left: 0;
+    background-color: var(--bg);
+    border: var(--bd2);
+}
+
+thead tr {
+    background-color: var(--bg) !important;
 }
 
 #inputs {

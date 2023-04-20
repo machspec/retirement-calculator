@@ -1,10 +1,10 @@
 [package]
 name = "retirement-calculator"
-version = "0.0.0"
-description = "A Tauri App"
-authors = ["you"]
-license = ""
-repository = ""
+version = "0.1.0"
+description = "A calculator for retirement planning."
+authors = ["Hunter Logan <@piccoloser>"]
+license = "GPL-3"
+repository = "https://github.com/machspec/retirement-calculator"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html

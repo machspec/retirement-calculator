@@ -43,7 +43,8 @@
         "title": "Retirement Calculator",
         "width": 800,
         "height": 600,
-        "minWidth": 364
+        "minWidth": 376,
+        "minHeight": 295
       }
     ]
   }
