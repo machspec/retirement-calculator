@@ -2,6 +2,7 @@ const { invoke } = window.__TAURI__.tauri;
 
 const tSettings = document.getElementById("table-settings");
 const tBody = document.querySelector("#age-results>tbody");
+const DEFAULT_INPUT = [23, 1000, 500, 10, 60];
 
 /** Create a new element given its tag name and properties */
 let newElement = (t, p) => Object.assign(document.createElement(t), p);
@@ -16,6 +17,7 @@ let lastRow = () => tBody.querySelector("tr:last-child");
 let lastRowData = () => Array.from(lastRow().querySelectorAll("td"));
 let lastRowContents = () => lastRowData().map(e => parseInt(e.textContent));
 
+/** Add a new row to the age results table. */
 function addRow() {
     let row = newElement("tr");
     row.appendChild(newElement("td", {
@@ -76,6 +78,16 @@ window.onload = () => {
     inputFn("#inputs input", () => console.log(tableSettings()));
     inputFn("#table-settings input:not(:last-child)", () => console.log(createRows()));
     inputFn("#table-settings input:last-child", () => updateRowCount());
+
+    document.getElementById("clear-inputs").onclick = () => {
+        document.querySelectorAll("#inputs input").forEach(e => e.value = "");
+    };
+
+    document.getElementById("reset-inputs").onclick = () => {
+        DEFAULT_INPUT.forEach((v, i) => {
+            document.querySelectorAll("#inputs input")[i].value = v;
+        });
+    }
 
     createRows();
 }
