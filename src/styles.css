@@ -1,9 +1,12 @@
 :root {
     --bd: solid 1px var(--lighter);
     --bg: #222;
+    --btn: #eee;
+    --btn-hover: #ccc;
     --fg: #eee;
     --lighter: #fff6;
     --darker: #0008;
+    --muted: #fff2;
 }
 
 * {
@@ -18,7 +21,20 @@ html {
     font-family: sans-serif;
 }
 
-header, h3 {
+button {
+    padding: .25rem .5rem;
+    border: none;
+    border-radius: 5px;
+    background-color: var(--btn);
+}
+
+button:hover {
+    cursor: pointer;
+    background-color: var(--btn-hover);
+}
+
+header,
+h3 {
     grid-column: 1 / -1;
 }
 
@@ -32,8 +48,8 @@ h3 {
 
 main {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    grid-template-rows: auto 1fr;
+    grid-template-columns: repeat(2, minmax(320px, 1fr));
+    grid-template-rows: 28px 1fr;
     gap: .25rem;
     padding: .25rem;
     height: 100vh;
@@ -49,33 +65,69 @@ section {
 
 #left {
     display: grid;
-    grid-template-rows: auto 1fr;
+    grid-template-rows: auto auto 1fr;
 }
 
 #right {
     display: grid;
     grid-template-rows: auto 1fr auto;
+    max-height: calc(100vh - 28px - .75rem);
 }
 
-section > :is(div, table) {
+#input-options {
+    display: flex;
+    justify-content: flex-end;
+    gap: .5rem;
+}
+
+#age-results-container {
+    overflow-y: scroll;
+    padding: 0;
+}
+
+section>div {
     background-color: var(--darker);
     padding: .5rem;
 }
 
 table {
-    margin: .25rem;
     border-collapse: collapse;
     outline: var(--bd);
+    width: 100%;
 }
 
 td {
     padding: .25rem;
-    border: var(--bd);
+    padding-left: 1rem;
+    border-top: var(--bd);
+    border-bottom: var(--bd);
+}
+
+tr {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    width: 100%;
+}
+
+tr:nth-child(odd) {
+    background-color: var(--muted);
+}
+
+thead {
+    position: sticky;
+    top: 0;
+    left: 0;
+    background-color: var(--bg);
+    border: var(--bd2);
+}
+
+thead tr {
+    background-color: var(--bg) !important;
 }
 
 #inputs {
     display: grid;
-    grid-template-columns: auto auto;
+    grid-template-columns: auto 8rem;
     gap: .5rem;
 }
 
@@ -94,4 +146,15 @@ td {
 #table-settings>input {
     width: 2.7rem;
     margin-top: .2rem;
+}
+
+div[id^="stats"] {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: repeat(auto-fit, 1.15rem);
+    gap: .25rem;
+}
+
+div[id^="stats"] :is(p, input):nth-child(even) {
+    text-align: right;
 }

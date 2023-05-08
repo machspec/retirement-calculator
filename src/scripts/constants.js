@@ -1,0 +1,1 @@
+export const DEFAULT_INPUT = [23, 1000, 500, 10, 60, 8.5, 10];
