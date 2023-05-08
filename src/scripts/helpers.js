@@ -1,4 +1,4 @@
-import { createRows, lastRow } from "./table.js";
+import { createRows } from "./table.js";
 
 /** document.getElementById(id) */
 export let $id = id => document.getElementById(id);
@@ -52,7 +52,7 @@ export function getTotalValue(y, i, m, r) {
 
 /** Roughly calculate the amount in the retirement fund with withdrawals. */
 export function getDrawDownValue(y, i, m, r) {
-    let drawDownAmt = () => parseFloat($id("stat-draw-down").textContent);
+    let drawDownAmt = () => $int($id("stat-draw-down").textContent);
 
     // Return if age is undefined.
     if (y < 1 || !y) return;
@@ -93,14 +93,14 @@ export function updateValues() {
     let drawDown = Math.ceil(parseInt(sixty) * $id("draw-down").value / 100);
 
     /* "Age Sixty" section. */
-    $id("startup").innerHTML = inputs["nest-egg"];
-    $id("age-sixty").innerHTML = sixty;
-    $id("total-inv").innerHTML = ((60 - inputs["age"]) * (inputs["amt-inv"] * 12));
+    $id("startup").innerHTML = $toLS(inputs["nest-egg"]);
+    $id("age-sixty").innerHTML = $toLS(sixty);
+    $id("total-inv").innerHTML = $toLS(((60 - inputs["age"]) * (inputs["amt-inv"] * 12)));
 
     /* "Summary" section. */
     $id("stat-ret-age").innerHTML = inputs["ret-age"]
-    $id("stat-nest-egg").innerHTML = sixty;
-    $id("stat-draw-down").innerHTML = drawDown;
+    $id("stat-nest-egg").innerHTML = $toLS(sixty);
+    $id("stat-draw-down").innerHTML = $toLS(drawDown);
 
     // Fill in the table.
     createRows();

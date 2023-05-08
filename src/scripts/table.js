@@ -1,8 +1,11 @@
 import { $in, $int, $qa, $qo, $toLS, $ts, getDrawDownValue } from "./helpers.js";
 
+/** Get values from the last row of the table. */
 export let lastRow = () => Array.from($qa("tbody>tr:last-child td"))
     .map(e => $int(e.textContent));
 
+/** Get input values for initial investment, monthly
+ *  contribution, and expected interest rate during retirement. */
 let imr = () => [$in()["nest-egg"], $in()["amt-inv"], $in()["exp-ret-int"]];
 
 function addRow() {
@@ -15,6 +18,7 @@ function addRow() {
     ));
 }
 
+/** Remove the last row from the table. */
 function removeRow() {
     $qo("tbody>tr:last-child").remove();
 }
@@ -29,14 +33,17 @@ export function newRow(age, value) {
     });
 }
 
+/** Create rows for the table. */
 export function createRows() {
-    if ($ts()["starting-age"] < $in()["age"]) return;
+    // Return if starting age < current age, or no age increment defined.
+    if ($ts()["starting-age"] < $in()["age"] || !$ts()["age-increment"]) return;
 
+    // Clear the table.
     $qo("#age-results>tbody").innerHTML = "";
 
+    // Add rows.
     for (let i = 0; i < $ts()["row-count"]; i++) {
         let age = $ts()["starting-age"] + i * $ts()["age-increment"];
-
         $qo("#age-results>tbody").appendChild(newRow(
             age, getDrawDownValue(
                 age - $in()["age"] + 1,
@@ -46,9 +53,12 @@ export function createRows() {
     }
 }
 
+/** Update the table row count. */
 export function updateRowCount() {
     let rowCount = $ts()["row-count"];
     let currentCount = $qo("#age-results>tbody").childElementCount;
+
+    if (!rowCount || !currentCount) return;
 
     switch (rowCount - currentCount) {
         case 0: break;
