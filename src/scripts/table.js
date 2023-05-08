@@ -1,71 +1,68 @@
-import { TABLE_BODY } from "./constants.js";
-import { getInputValues, getTableSettings, getTotalValue, newElement } from "./helpers.js";
+import { $in, $int, $qa, $qo, $toLS, $ts, getDrawDownValue } from "./helpers.js";
 
-// Table Handlers
-let lastRow = () => TABLE_BODY.querySelector("tr:last-child");
-let lastRowData = () => Array.from(lastRow().querySelectorAll("td"));
-let lastRowContents = () => lastRowData().map(e => parseInt(e.textContent));
+export let lastRow = () => Array.from($qa("tbody>tr:last-child td"))
+    .map(e => $int(e.textContent));
 
-/** Add a new row to the age results table. */
-export function addRow() {
-    let row = newElement("tr");
-    let inputs = getInputValues();
+let imr = () => [$in()["nest-egg"], $in()["amt-inv"], $in()["exp-ret-int"]];
 
-    row.appendChild(newElement("td", {
-        textContent: lastRowContents()[0] + getTableSettings()["age-increment"]
-    }));
+function addRow() {
+    let age = lastRow()[0] + $ts()["age-increment"];
+    $qo("#age-results>tbody").appendChild(newRow(
+        age, getDrawDownValue(
+            age - $in()["age"] + 1,
+            ...imr()
+        )
+    ));
+}
 
-    row.appendChild(newElement("td", {
-        textContent: getTotalValue(
-            lastRowContents()[0] + getTableSettings()["age-increment"] - inputs["age"],
-            inputs["nest-egg"],
-            inputs["amt-inv"],
-            inputs["exp-int"],
-        ),
-    }));
+function removeRow() {
+    $qo("tbody>tr:last-child").remove();
+}
 
-    TABLE_BODY.appendChild(row);
+/** Create a new row given values for `age` and `value`. */
+export function newRow(age, value) {
+    return Object.assign(document.createElement("tr"), {
+        innerHTML: `
+            <td>${age}</td>
+            <td>${$toLS(value)}</td>
+        `
+    });
 }
 
 export function createRows() {
-    TABLE_BODY.innerHTML = "";
+    if ($ts()["starting-age"] < $in()["age"]) return;
 
-    let inputs = getInputValues();
-    let [startingAge, ageIncrement, rowCount] = Object.values(getTableSettings());
+    $qo("#age-results>tbody").innerHTML = "";
 
-    for (let i = 0; i < rowCount; i++) {
-        let row = newElement("tr");
+    for (let i = 0; i < $ts()["row-count"]; i++) {
+        let age = $ts()["starting-age"] + i * $ts()["age-increment"];
 
-        // Add incremented age.
-        row.appendChild(newElement("td", { textContent: startingAge + i * ageIncrement }));
-
-        console.log(inputs["age"] + i * ageIncrement);
-
-        // TODO: Calculate Nest Egg.
-        row.appendChild(newElement("td", {
-            textContent: getTotalValue(
-                inputs["age"] + i * ageIncrement,
-                inputs["nest-egg"],
-                inputs["amt-inv"],
-                inputs["exp-int"],
+        $qo("#age-results>tbody").appendChild(newRow(
+            age, getDrawDownValue(
+                age - $in()["age"] + 1,
+                ...imr(),
             )
-        }));
-
-        TABLE_BODY.appendChild(row);
+        ));
     }
 }
 
 export function updateRowCount() {
-    let currentRows = TABLE_BODY.querySelectorAll("tr").length;
-    let desiredRows = getTableSettings()["row-count"];
-    let rowDelta = currentRows - desiredRows;
+    let rowCount = $ts()["row-count"];
+    let currentCount = $qo("#age-results>tbody").childElementCount;
 
-    // If the user sets the row count manually, just recreate all rows.
-    if (Math.abs(rowDelta) != 1) {
-        createRows();
-        return;
+    switch (rowCount - currentCount) {
+        case 0: break;
+
+        case 1:
+            addRow();
+            break;
+
+        case -1:
+            removeRow();
+            break;
+
+        default:
+            createRows();
+            break;
     }
-
-    if (rowDelta < 0) addRow();
-    else lastRow().remove();
 }
