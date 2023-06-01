@@ -68,13 +68,9 @@ export function getDrawDownValue(y, i, m, r, rr) {
             iter++;
 
             // Check whether the current age is greater than the retirement age.
-            let out = iter + $in()["age"] - 1 > $in()["ret-age"] ?
+            return iter + $in()["age"] - 1 > $in()["ret-age"] ?
                 (acc - drawDownAmt()) * (rr / 100 + 1) // Retired, so draw down.
                 : (acc + m * 12) * (r / 100 + 1); // Not retired yet.
-
-            if (iter == y) console.log(`${iter}: ${out}`);
-
-            return out;
         }, i));
 
     return output;
