@@ -44,6 +44,7 @@ export function getTotalValue(y, i, m, r) {
     // Convert undefined to 0.
     [i, m, r] = [i, m, r].map(v => v = v || 0);
 
+
     let output = Math.floor(Array(y).fill()
         .reduce(acc => (acc + m * 12) * (r / 100 + 1), i));
 
@@ -51,14 +52,14 @@ export function getTotalValue(y, i, m, r) {
 }
 
 /** Roughly calculate the amount in the retirement fund with withdrawals. */
-export function getDrawDownValue(y, i, m, r) {
+export function getDrawDownValue(y, i, m, r, rr) {
     let drawDownAmt = () => $int($id("stat-draw-down").textContent);
 
     // Return if age is undefined.
     if (y < 1 || !y) return;
 
     // Convert undefined to 0.
-    [i, m, r] = [i, m, r].map(v => v = v || 0);
+    [i, m, r, rr] = [i, m, r, rr].map(v => v = v || 0);
 
     // Calculate the total value of the retirement fund.
     let iter = 0;
@@ -67,13 +68,13 @@ export function getDrawDownValue(y, i, m, r) {
             iter++;
 
             // Check whether the current age is greater than the retirement age.
-            return iter + $in()["age"] - 1 > $in()["ret-age"] ?
+            let out = iter + $in()["age"] - 1 > $in()["ret-age"] ?
+                (acc - drawDownAmt()) * (rr / 100 + 1) // Retired, so draw down.
+                : (acc + m * 12) * (r / 100 + 1); // Not retired yet.
 
-                // If so, subtract the draw down amount from the total.
-                (acc - drawDownAmt()) * (r / 100 + 1)
+            if (iter == y) console.log(`${iter}: ${out}`);
 
-                // Otherwise, add the monthly contribution to the total.
-                : (acc + m * 12) * (r / 100 + 1);
+            return out;
         }, i));
 
     return output;
@@ -83,23 +84,21 @@ export function getDrawDownValue(y, i, m, r) {
 export function updateValues() {
     let inputs = $in();
 
-    let sixty = getTotalValue(
-        (60 - inputs["age"] + 1),
+    if (!inputs["ret-age"] || inputs["ret-age"] < inputs["age"]) return;
+
+    let retTotal = getTotalValue(
+        (inputs["ret-age"] - inputs["age"] + 1),
         inputs["nest-egg"],
         inputs["amt-inv"],
         inputs["exp-int"],
     );
 
-    let drawDown = Math.ceil(parseInt(sixty) * $id("draw-down").value / 100);
+    let drawDown = Math.ceil(parseInt(retTotal) * $id("draw-down").value / 100);
 
     /* "Age Sixty" section. */
     $id("startup").innerHTML = $toLS(inputs["nest-egg"]);
-    $id("age-sixty").innerHTML = $toLS(sixty);
+    $id("stat-ret-total").innerHTML = $toLS(retTotal);
     $id("total-inv").innerHTML = $toLS(((60 - inputs["age"]) * (inputs["amt-inv"] * 12)));
-
-    /* "Summary" section. */
-    $id("stat-ret-age").innerHTML = inputs["ret-age"]
-    $id("stat-nest-egg").innerHTML = $toLS(sixty);
     $id("stat-draw-down").innerHTML = $toLS(drawDown);
 
     // Fill in the table.

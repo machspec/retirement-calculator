@@ -6,7 +6,12 @@ export let lastRow = () => Array.from($qa("tbody>tr:last-child td"))
 
 /** Get input values for initial investment, monthly
  *  contribution, and expected interest rate during retirement. */
-let imr = () => [$in()["nest-egg"], $in()["amt-inv"], $in()["exp-ret-int"]];
+let imr = () => [
+    $in()["nest-egg"],
+    $in()["amt-inv"],
+    $in()["exp-int"],
+    $in()["exp-ret-int"],
+];
 
 function addRow() {
     let age = lastRow()[0] + $ts()["age-increment"];
