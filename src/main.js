@@ -1,8 +1,6 @@
 import { DEFAULT_INPUT } from "./scripts/constants.js";
-import { $id, $in, $qa, $qfn, updateValues } from "./scripts/helpers.js";
+import { $id, $qa, $qfn, updateValues } from "./scripts/helpers.js";
 import { createRows, updateRowCount } from "./scripts/table.js";
-
-const { invoke } = window.__TAURI__.tauri;
 
 window.onload = () => {
     $qfn("#inputs input", () => updateValues());
